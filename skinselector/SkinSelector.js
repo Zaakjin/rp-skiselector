@@ -5,9 +5,11 @@ var skinMenuMain = null;
 var skinMenuHair = null;
 var maleHairStyleListItem = null;
 var femaleHairStyleListItem = null;
+var mainMenuTextItems = ["Наследственность", "Характеристики", "Внешность", "Одежда"];
 var shapeVariants = ["Похож(а) на мать", "50/50", "Похож(а) на отца"];
 var skinBlendVariants = ["Как у матери", "50/50", "Как у отца"];
 var genderVariants = ["Мужской", "Женский"];
+var inheritanceMenuItems = [["Мама", numberToList(45)], ["Папа", numberToList(45)], ["Внешний вид", arrayToList(shapeVariants)], ["Цвет кожи", arrayToList(shapeVariants)]];
 API.onUpdate.connect(function () {
     if (menuPool != null) {
         menuPool.ProcessMenus();
@@ -18,53 +20,32 @@ API.onResourceStart.connect(function () {
     createSkinMainMenu();
 });
 function createSkinMainMenu() {
-    //MAIN MENU
-    skinMenuMain = API.createMenu("Выбор внешности", " ", 0, 0, 2);
-    var faceList = new List(String);
-    var shapeList = new List(String);
-    var blendList = new List(String);
-    var genderList = new List(String);
-    for (var i = 0; i < 46; i++) {
-        faceList.Add(i.toString());
+    skinMenuMain = API.createMenu("Редактор персонажа", " ", 0, 0, 2);
+    var menuMainItemsArray = [];
+    for (var _i = 0, mainMenuTextItems_1 = mainMenuTextItems; _i < mainMenuTextItems_1.length; _i++) {
+        var item = mainMenuTextItems_1[_i];
+        menuMainItemsArray.push(createSubMenu(skinMenuMain, "Редактор персонажа", item, 2));
     }
-    for (var i = 0; i < skinBlendVariants.length; i++) {
-        shapeList.Add(shapeVariants[i]);
-    }
-    for (var i = 0; i < skinBlendVariants.length; i++) {
-        blendList.Add(skinBlendVariants[i]);
-    }
-    for (var i = 0; i < genderVariants.length; i++) {
-        genderList.Add(genderVariants[i]);
-    }
-    var motherListItem = API.createListItem("Мать", "", faceList, 0);
-    var fatherListItem = API.createListItem("Отец", "", faceList, 0);
-    var shapeListItem = API.createListItem("Лицо", "", shapeList, 0);
-    var blendListItem = API.createListItem("Кожа", "", blendList, 0);
-    var genderListItem = API.createListItem("Пол", "", genderList, 0);
-    var hairMenuItem = API.createMenuItem("Волосы", "");
-    createSkinMenuHair();
-    skinMenuMain.BindMenuToItem(skinMenuHair, hairMenuItem);
-    skinMenuMain.AddItem(motherListItem);
-    skinMenuMain.AddItem(fatherListItem);
-    skinMenuMain.AddItem(shapeListItem);
-    skinMenuMain.AddItem(blendListItem);
-    skinMenuMain.AddItem(genderListItem);
-    skinMenuMain.AddItem(hairMenuItem);
-    skinMenuMain.OnListChange.connect(function (sender, listItem, newIndex) {
-        API.triggerServerEvent(listItem.Text, newIndex);
-        if (listItem.Text == "Пол") {
-            skinMenuHair.RemoveItemAt(0);
-            if (newIndex == 0) {
-                skinMenuHair.InsertItem(maleHairStyleListItem, 0);
-            }
-            else {
-                skinMenuHair.InsertItem(femaleHairStyleListItem, 0);
-            }
-        }
-        ;
-    });
+    ;
+    fillMenuWithListItems(menuMainItemsArray[0], inheritanceMenuItems);
     menuPool.Add(skinMenuMain);
     skinMenuMain.Visible = false;
+}
+;
+function fillMenuWithListItems(menu, itemArray) {
+    for (var i = 0; i < itemArray.length; i++) {
+        menu.AddItem(API.createListItem(itemArray[i][0], "", itemArray[i][1], 0));
+    }
+}
+;
+function createSubMenu(menuUI, subMenuTitle, subMenuName, anchorPoint) {
+    var newMenu = API.createMenu(subMenuTitle, subMenuName, 0, 0, anchorPoint);
+    menuPool.Add(newMenu);
+    var newMenuItem = API.createMenuItem(subMenuName, "");
+    newMenuItem.SetRightLabel("< XYZ >");
+    menuUI.AddItem(newMenuItem);
+    menuUI.BindMenuToItem(newMenu, newMenuItem);
+    return newMenu;
 }
 ;
 function createSkinMenuHair() {
@@ -94,17 +75,25 @@ function createSkinMenuHair() {
 }
 function numberToList(maxId) {
     var returnList = new List(String);
-    for (var i = 1; i < maxId + 1; i++) {
+    for (var i = 0; i <= maxId; i++) {
         returnList.Add(i.toString());
     }
     return returnList;
+}
+;
+function arrayToList(array) {
+    var newList = new List(String);
+    for (var i = 0; i < array.length; i++) {
+        newList.Add(array[i]);
+    }
+    return newList;
 }
 ;
 API.onKeyDown.connect(function (Player, args) {
     if (args.KeyCode == Keys.E && !API.isChatOpen()) {
         if (!menuPool.IsAnyMenuOpen()) {
             skinMenuMain.CurrentSelection = 0;
-            skinMenuHair.CurrentSelection = 0;
+            //skinMenuHair.CurrentSelection = 0;
             skinMenuMain.Visible = true;
         }
     }
