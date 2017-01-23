@@ -1,0 +1,6 @@
+﻿<meta>
+    <info name="Skin Selector" author="Zaakjin" version="1.0" />
+    <include resource="gtaocharacter" />
+    <script src="SkinSelector.cs" type="server" lang="csharp" />
+    <script src="SkinSelector.js" type="client" lang="javascript" />
+</meta>

@@ -1,0 +1,5 @@
+﻿<meta>
+  <info name="Coords display" author="Zaakjin" type="script" async="true" />
+  <script src="coords.cs" type="server" lang="csharp" />
+  <script src="coords.js" type="client" lang="javascript" />
+</meta>
