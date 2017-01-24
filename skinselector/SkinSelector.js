@@ -9,7 +9,39 @@ var mainMenuTextItems = ["Наследственность", "Характери
 var shapeVariants = ["Похож(а) на мать", "50/50", "Похож(а) на отца"];
 var skinBlendVariants = ["Как у матери", "50/50", "Как у отца"];
 var genderVariants = ["Мужской", "Женский"];
-var inheritanceMenuItems = [["Мама", numberToList(45)], ["Папа", numberToList(45)], ["Внешний вид", arrayToList(shapeVariants)], ["Цвет кожи", arrayToList(shapeVariants)]];
+var inheritanceMenuItems = [["Мама", numberToList(45)],
+    ["Папа", numberToList(45)],
+    ["Внешний вид", arrayToList(shapeVariants)],
+    ["Цвет кожи", arrayToList(shapeVariants)]];
+var characteristicsMenuItems = [["Лоб", numberToList(10)],
+    ["Глаза", numberToList(10)],
+    ["Нос", numberToList(10)],
+    ["Профиль носа", numberToList(10)],
+    ["Кончик носа", numberToList(10)],
+    ["Скулы", numberToList(10)],
+    ["Щеки", numberToList(10)],
+    ["Губы", numberToList(10)],
+    ["Челюсть", numberToList(10)],
+    ["Профиль подбородка", numberToList(10)]];
+var appearanceMenuItems = [["Прическа", numberToList(10)],
+    ["Цвет волос", numberToList(10)],
+    ["Оттенок волос", numberToList(10)],
+    ["Брови", numberToList(10)],
+    ["Волосы на лице", numberToList(10)],
+    ["Дефекты кожи", numberToList(10)],
+    ["Старение кожи", numberToList(10)],
+    ["Тип кожи", numberToList(10)],
+    ["Родинки и веснушки", numberToList(10)],
+    ["Повреждения кожи", numberToList(10)],
+    ["Цвет глаз", numberToList(10)],
+    ["Макияж глаз", numberToList(10)],
+    ["Румяна", numberToList(10)],
+    ["Помада", numberToList(10)]];
+var appearanceMenuHairstyleVariants = ["Под ноль", "Коротко", "Слои", "Косички", "Хвост", "Ирокез", "Косички", "Боб", "Ястреб", "Ракушка", "Лонг боб", "Свободно", "Пикси", "Подбритые виски", "Узел", "Волнистый боб", "Красотка", "Пучок", "Флэппер боб", "Тугой узел", "Одуванчик", "Взрыв", "Узел", "Сколотые косички", "Косички-листья", "Косички-зигзаги", "Хвостики с челкой", "Косички-волны", "Косички-завитки", "Челка-валик", "Растрепанный зачес назад", "Подстриженный зачес назад", "Подстриженный зачес набок", "Шипастый ирокез", "Банда и косички", "Челси", "Стиляга со слоями"];
+var clothesMenuItems = [["Стиль", numberToList(10)],
+    ["Одежда", numberToList(10)],
+    ["Головной убор", numberToList(10)],
+    ["Очки", numberToList(10)]];
 API.onUpdate.connect(function () {
     if (menuPool != null) {
         menuPool.ProcessMenus();
@@ -27,7 +59,11 @@ function createSkinMainMenu() {
         menuMainItemsArray.push(createSubMenu(skinMenuMain, "Редактор персонажа", item, 2));
     }
     ;
-    fillMenuWithListItems(menuMainItemsArray[0], inheritanceMenuItems);
+    var subMenuArray = [inheritanceMenuItems, characteristicsMenuItems, appearanceMenuItems, clothesMenuItems];
+    for (var i = 0; i < menuMainItemsArray.length; i++) {
+        fillMenuWithListItems(menuMainItemsArray[i], subMenuArray[i]);
+    }
+    ;
     menuPool.Add(skinMenuMain);
     skinMenuMain.Visible = false;
 }
@@ -49,21 +85,6 @@ function createSubMenu(menuUI, subMenuTitle, subMenuName, anchorPoint) {
 }
 ;
 function createSkinMenuHair() {
-    skinMenuHair = API.createMenu("Волосы", "", 0, 0, 2);
-    maleHairStyleListItem = API.createListItem("Стиль волос", "", numberToList(37), 0);
-    femaleHairStyleListItem = API.createListItem("Стиль волос", "", numberToList(39), 0);
-    var hairColorListItem = API.createListItem("Цвет волос", "", numberToList(64), 0);
-    var hairHighlightColorListItem = API.createListItem("Оттенок волос", "", numberToList(64), 0);
-    var eyebrowsStyleListItem = API.createListItem("Брови", "", numberToList(34), 0);
-    if (API.getEntityModel(API.getLocalPlayer()) == 1885233650) {
-        skinMenuHair.AddItem(maleHairStyleListItem);
-    }
-    else if (API.getEntityModel(API.getLocalPlayer()) == -1667301416) {
-        skinMenuHair.AddItem(femaleHairStyleListItem);
-    }
-    skinMenuHair.AddItem(hairColorListItem);
-    skinMenuHair.AddItem(hairHighlightColorListItem);
-    skinMenuHair.AddItem(eyebrowsStyleListItem);
     skinMenuHair.OnListChange.connect(function (sender, listItem, newIndex) {
         //API.sendChatMessage("~r~_GET_NUM_HEAD_OVERLAY_VALUES:~w~ " + API.returnNative("_GET_NUM_HEAD_OVERLAY_VALUES", 0, 2));
         //.callNative("SET_PED_COMPONENT_VARIATION", API.getLocalPlayer(), 2, newIndex, 0, 0);
