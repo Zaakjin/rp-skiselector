@@ -10,6 +10,8 @@ var SKIN_MENU_NAME = "Редактор персонажа";
 //                                                            3 Обычная строка без подменю),
 //                                       name название пункта меню,
 //                                       items[] массив пунктов меню для id 0 или список вариантов для id 1,2]
+var maleHairstyleVariants = ["Под ноль", "Коротко", '"Ястреб"', '"Хипстер"', 'Челка набок', '"Коротко"', '"Байкер"', '"Хвост"', '"Косички"', '"Прилиза"', '"Коротко"', '"Шипы"', '"Цезарь"', '"Чоппи"', 'Дреды', 'Длинные', 'Лохматые кудри', '"Серфингист"', '"Набок"', '"Зализ"', '"Длинные"', '"Юный хипстер"', 'Классические "Косички"', 'Косички - "пальма"', 'Косички - "молнии"', 'Зачесанные наверх косички', 'Косички - зигзаги', 'Косички - "улитки"', 'Хай - топ', 'Растрепанный зачес назад', 'Подстриженны зачес назад', 'Подстриженный зачес набок', 'Шипастый ирокез', '"Стиляга"', '"Стиляга" со слоями'];
+var femaleHairstyleVariants = ["Под ноль", "Коротко", "Слои", "Косички", "Хвост", "Ирокез", "Косички", "Боб", "Ястреб", "Ракушка", "Лонг боб", "Свободно", "Пикси", "Подбритые виски", "Узел", "Волнистый боб", "Красотка", "Пучок", "Флэппер боб", "Тугой узел", "Одуванчик", "Взрыв", "Узел", "Сколотые косички", "Косички-листья", "Косички-зигзаги", "Хвостики с челкой", "Косички-волны", "Косички-завитки", "Челка-валик", "Растрепанный зачес назад", "Подстриженный зачес назад", "Подстриженный зачес набок", "Шипастый ирокез", "Банда и косички", "Челси", "Стиляга со слоями"];
 var inheritanceMenuItems = [[1, "Мама", numberToList(45)],
     [1, "Папа", numberToList(45)],
     [1, "Внешний вид", arrayToList(["Похож(а) на мать", "50/50", "Похож(а) на отца"])],
@@ -24,21 +26,21 @@ var characteristicsMenuItems = [[1, "Лоб", numberToList(10)],
     [1, "Губы", numberToList(10)],
     [1, "Челюсть", numberToList(10)],
     [1, "Профиль подбородка", numberToList(10)]];
-var hairstyleMenuItems = [[1, "Прическа", numberToList(10)],
-    [1, "Цвет волос", numberToList(10)],
-    [1, "Оттенок волос", numberToList(10)],
-    [1, "Брови", numberToList(10)],
-    [1, "Волосы на лице", numberToList(10)]];
+//var hairstyleMenuItems =    [[1, "Прическа",        numberToList(10)],
+//                            [1, "Цвет волос",       numberToList(API.returnNative("_GET_NUM_HAIR_COLORS", 0))],
+//                            [1, "Оттенок волос",    numberToList(API.returnNative("_GET_NUM_HAIR_COLORS", 0))],
+//                            [1, "Брови",            numberToList(10)],
+//                            [1, "Волосы на лице",   numberToList(10)]];
 var appearanceMenuItems = [[0, "Волосы", function (a) { fillHairstyleMenu(a); }],
-    [1, "Дефекты кожи", numberToList(10)],
-    [1, "Старение кожи", numberToList(10)],
-    [1, "Тип кожи", numberToList(10)],
-    [1, "Родинки и веснушки", numberToList(10)],
-    [1, "Повреждения кожи", numberToList(10)],
-    [1, "Цвет глаз", numberToList(10)],
-    [1, "Макияж глаз", numberToList(10)],
-    [1, "Румяна", numberToList(10)],
-    [1, "Помада", numberToList(10)]];
+    [1, "Дефекты кожи", numberToList(API.returnNative("_GET_NUM_HEAD_OVERLAY_VALUES", 0, 0) - 1)],
+    [1, "Старение кожи", numberToList(API.returnNative("_GET_NUM_HEAD_OVERLAY_VALUES", 0, 3) - 1)],
+    [1, "Тип кожи", numberToList(API.returnNative("_GET_NUM_HEAD_OVERLAY_VALUES", 0, 6) - 1)],
+    [1, "Родинки и веснушки", numberToList(API.returnNative("_GET_NUM_HEAD_OVERLAY_VALUES", 0, 9) - 1)],
+    [1, "Повреждения кожи", numberToList(API.returnNative("_GET_NUM_HEAD_OVERLAY_VALUES", 0, 7) - 1)],
+    [1, "Цвет глаз", numberToList(30)],
+    [1, "Макияж глаз", numberToList(API.returnNative("_GET_NUM_HEAD_OVERLAY_VALUES", 0, 4) - 1)],
+    [1, "Румяна", numberToList(API.returnNative("_GET_NUM_HEAD_OVERLAY_VALUES", 0, 5) - 1)],
+    [1, "Помада", numberToList(API.returnNative("_GET_NUM_HEAD_OVERLAY_VALUES", 0, 8) - 1)]];
 var clothesMenuItems = [[1, "Стиль", numberToList(10)],
     [1, "Одежда", numberToList(10)],
     [1, "Головной убор", numberToList(10)],
@@ -65,6 +67,11 @@ function createSkinMainMenu() {
 }
 ;
 function fillHairstyleMenu(newMenu) {
+    var hairstyleMenuItems = [[1, "Прическа", (API.getEntityModel(API.getLocalPlayer()) == -1667301416) ? arrayToList(femaleHairstyleVariants) : arrayToList(maleHairstyleVariants)],
+        [1, "Цвет волос", numberToList(API.returnNative("_GET_NUM_HAIR_COLORS", 0) - 1)],
+        [1, "Оттенок волос", numberToList(API.returnNative("_GET_NUM_HAIR_COLORS", 0) - 1)],
+        [1, "Брови", numberToList(API.returnNative("_GET_NUM_HEAD_OVERLAY_VALUES", 0, 2) - 1)],
+        [1, "Волосы на лице", numberToList(API.returnNative("_GET_NUM_HEAD_OVERLAY_VALUES", 0, 1) - 1)]];
     if (API.getEntityModel(API.getLocalPlayer()) == -1667301416) {
         var femaleHairStyleMenu = hairstyleMenuItems;
         femaleHairStyleMenu.splice(4, 1);
@@ -145,4 +152,3 @@ API.onKeyDown.connect(function (Player, args) {
         }
     }
 });
-var appearanceMenuHairstyleVariants = ["Под ноль", "Коротко", "Слои", "Косички", "Хвост", "Ирокез", "Косички", "Боб", "Ястреб", "Ракушка", "Лонг боб", "Свободно", "Пикси", "Подбритые виски", "Узел", "Волнистый боб", "Красотка", "Пучок", "Флэппер боб", "Тугой узел", "Одуванчик", "Взрыв", "Узел", "Сколотые косички", "Косички-листья", "Косички-зигзаги", "Хвостики с челкой", "Косички-волны", "Косички-завитки", "Челка-валик", "Растрепанный зачес назад", "Подстриженный зачес назад", "Подстриженный зачес набок", "Шипастый ирокез", "Банда и косички", "Челси", "Стиляга со слоями"];
