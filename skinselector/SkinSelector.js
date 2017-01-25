@@ -12,8 +12,8 @@ var SKIN_MENU_NAME = "Редактор персонажа";
 //                                       items[] массив пунктов меню для id 0 или список вариантов для id 1,2]
 var maleHairstyleVariants = ["Под ноль", "Коротко", '"Ястреб"', '"Хипстер"', 'Челка набок', '"Коротко"', '"Байкер"', '"Хвост"', '"Косички"', '"Прилиза"', '"Коротко"', '"Шипы"', '"Цезарь"', '"Чоппи"', 'Дреды', 'Длинные', 'Лохматые кудри', '"Серфингист"', '"Набок"', '"Зализ"', '"Длинные"', '"Юный хипстер"', 'Классические "Косички"', 'Косички - "пальма"', 'Косички - "молнии"', 'Зачесанные наверх косички', 'Косички - зигзаги', 'Косички - "улитки"', 'Хай - топ', 'Растрепанный зачес назад', 'Подстриженны зачес назад', 'Подстриженный зачес набок', 'Шипастый ирокез', '"Стиляга"', '"Стиляга" со слоями'];
 var femaleHairstyleVariants = ["Под ноль", "Коротко", "Слои", "Косички", "Хвост", "Ирокез", "Косички", "Боб", "Ястреб", "Ракушка", "Лонг боб", "Свободно", "Пикси", "Подбритые виски", "Узел", "Волнистый боб", "Красотка", "Пучок", "Флэппер боб", "Тугой узел", "Одуванчик", "Взрыв", "Узел", "Сколотые косички", "Косички-листья", "Косички-зигзаги", "Хвостики с челкой", "Косички-волны", "Косички-завитки", "Челка-валик", "Растрепанный зачес назад", "Подстриженный зачес назад", "Подстриженный зачес набок", "Шипастый ирокез", "Банда и косички", "Челси", "Стиляга со слоями"];
-var inheritanceMenuItems = [[1, "Мама", numberToList(45)],
-    [1, "Папа", numberToList(45)],
+var inheritanceMenuItems = [[1, "Мать", numberToList(45)],
+    [1, "Отец", numberToList(45)],
     [1, "Внешний вид", arrayToList(["Похож(а) на мать", "50/50", "Похож(а) на отца"])],
     [1, "Цвет кожи", arrayToList(["Как у матери", "50/50", "Как у отца"])]];
 var characteristicsMenuItems = [[1, "Лоб", numberToList(10)],
@@ -102,7 +102,7 @@ function fillMenuWithListItems(menu, itemArray, title) {
             case 1:
                 //API.sendChatMessage("~g~Case 1");
                 var newMenuListItem = API.createListItem(itemArray[i][1], "", itemArray[i][2], 0);
-                newMenuListItem.OnListChanged.connect(function (menuListItem, newIndex) { API.triggerServerEvent(menuListItem.Text, newIndex); });
+                newMenuListItem.OnListChanged.connect(function (menuListItem, newIndex) { API.triggerServerEvent("SK_SEL_" + menuListItem.Text, newIndex); });
                 //newMenuListItem.OnListChanged.connect(function (menuListItem, newIndex) { API.sendChatMessage("~w~Player changed menu list: ~r~" + menuListItem.Text + " ~w~new index is: ~g~" + newIndex.toString()); });
                 menu.AddItem(newMenuListItem);
                 break;
@@ -110,7 +110,7 @@ function fillMenuWithListItems(menu, itemArray, title) {
                 //API.sendChatMessage("~b~Case 2");
                 //TODO
                 var newMenuListItem = API.createListItem(itemArray[i][1], "", itemArray[i][2], 0);
-                newMenuListItem.OnListChanged.connect(function (menuListItem, newIndex) { API.triggerServerEvent(menuListItem.Text, newIndex); });
+                newMenuListItem.OnListChanged.connect(function (menuListItem, newIndex) { API.triggerServerEvent("SK_SEL_" + menuListItem.Text, newIndex); });
                 //newMenuListItem.OnListChanged.connect(function (menuListItem, newIndex) { API.sendChatMessage("~w~Player changed menu list: ~r~" + menuListItem.Text + " ~w~new index is: ~g~" + newIndex.toString()); });
                 menu.AddItem(newMenuListItem);
                 break;
