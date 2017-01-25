@@ -113,12 +113,18 @@ function fillMenuWithListItems(menu: any, itemArray: any[], title: string) {
                 break;
             case 1:
                 //API.sendChatMessage("~g~Case 1");
-                menu.AddItem(API.createListItem(itemArray[i][1], "", itemArray[i][2], 0));
+                var newMenuListItem = API.createListItem(itemArray[i][1], "", itemArray[i][2], 0);
+                newMenuListItem.OnListChanged.connect(function (menuListItem, newIndex) { API.triggerServerEvent(menuListItem.Text, newIndex); });
+                //newMenuListItem.OnListChanged.connect(function (menuListItem, newIndex) { API.sendChatMessage("~w~Player changed menu list: ~r~" + menuListItem.Text + " ~w~new index is: ~g~" + newIndex.toString()); });
+                menu.AddItem(newMenuListItem);
                 break;
             case 2:
                 //API.sendChatMessage("~b~Case 2");
                 //TODO
-                menu.AddItem(API.createListItem(itemArray[i][1], "", itemArray[i][2], 0));
+                var newMenuListItem = API.createListItem(itemArray[i][1], "", itemArray[i][2], 0);
+                newMenuListItem.OnListChanged.connect(function (menuListItem, newIndex) { API.triggerServerEvent(menuListItem.Text, newIndex); });
+                //newMenuListItem.OnListChanged.connect(function (menuListItem, newIndex) { API.sendChatMessage("~w~Player changed menu list: ~r~" + menuListItem.Text + " ~w~new index is: ~g~" + newIndex.toString()); });
+                menu.AddItem(newMenuListItem);
                 break;
             case 3:
                 break;

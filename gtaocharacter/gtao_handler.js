@@ -21,12 +21,16 @@ API.onEntityStreamIn.connect(function(ent, entType) {
 
 
 function setPedCharacter(ent) {
-    if (API.isPed(ent) &&
-        API.getEntitySyncedData(ent, "GTAO_HAS_CHARACTER_DATA") === true &&
+    if (API.getEntitySyncedData(ent, "GTAO_HAS_CHARACTER_DATA") === true) {
+        //PLAYER MODEL
+        var playerModel = API.getEntitySyncedData(ent, "GTAO_PLAYER_MODEL");
+        //TODO перенести на серверную сторону
+        API.setPlayerSkin(player, (PedHash)playerModel);
+    }
+    if (API.isPed(ent)  &&
         (API.getEntityModel(ent) == 1885233650 || // FreemodeMale
          API.getEntityModel(ent) == -1667301416)) // FreemodeFemale
     {
-        //PLAYER MODEL
         
         // FACE
         var shapeFirstId = API.getEntitySyncedData(ent, "GTAO_SHAPE_FIRST_ID");
