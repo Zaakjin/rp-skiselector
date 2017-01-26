@@ -28,24 +28,26 @@ public class GTAOnlineCharacter : Script
         API.setEntitySyncedData(ent, "GTAO_HAIR_COLOR", 0);
         API.setEntitySyncedData(ent, "GTAO_HAIR_HIGHLIGHT_COLOR", 0);
         API.setEntitySyncedData(ent, "GTAO_EYEBROWS", 0);
-        API.setEntitySyncedData(ent, "GTAO_FACIAL_HAIR", 0);
-        //Appearance
-        API.setEntitySyncedData(ent, "GTAO_BLEMISHES", 0);
-        API.setEntitySyncedData(ent, "GTAO_AGEING", 0);
-        API.setEntitySyncedData(ent, "GTAO_COMPLEXION", 0);
-        API.setEntitySyncedData(ent, "GTAO_FRECKLES", 0);
-        API.setEntitySyncedData(ent, "GTAO_SUN_DAMAGE", 0);
-        API.setEntitySyncedData(ent, "GTAO_EYE_COLOR", 0);
-        //API.setEntitySyncedData(ent, "GTAO_MAKEUP", 0); // No lipstick by default. 
-        //API.setEntitySyncedData(ent, "GTAO_MAKEUP", 0);
-        API.setEntitySyncedData(ent, "GTAO_BLUSH", 0);
-        //API.setEntitySyncedData(ent, "GTAO_LIPSTICK", 0); // No makeup by default.
-        
         API.setEntitySyncedData(ent, "GTAO_EYEBROWS_COLOR", 0);
-        API.setEntitySyncedData(ent, "GTAO_MAKEUP_COLOR", 0);
-        API.setEntitySyncedData(ent, "GTAO_LIPSTICK_COLOR", 0);
         API.setEntitySyncedData(ent, "GTAO_EYEBROWS_COLOR2", 0);
-        API.setEntitySyncedData(ent, "GTAO_MAKEUP_COLOR2", 0);
+        API.setEntitySyncedData(ent, "GTAO_FACIAL_HAIR", -1); // No by default. 
+        API.setEntitySyncedData(ent, "GTAO_FACIAL_HAIR_COLOR", 0);
+        API.setEntitySyncedData(ent, "GTAO_FACIAL_HAIR_COLOR2", 0);//Useless
+        //Appearance
+        API.setEntitySyncedData(ent, "GTAO_BLEMISHES", -1);
+        API.setEntitySyncedData(ent, "GTAO_AGEING", -1);
+        API.setEntitySyncedData(ent, "GTAO_COMPLEXION", -1);
+        API.setEntitySyncedData(ent, "GTAO_FRECKLES", -1);
+        API.setEntitySyncedData(ent, "GTAO_SUN_DAMAGE", -1);
+        API.setEntitySyncedData(ent, "GTAO_EYE_COLOR", -1);
+        API.setEntitySyncedData(ent, "GTAO_MAKEUP", -1);
+        //API.setEntitySyncedData(ent, "GTAO_MAKEUP_COLOR",  0);//Useless
+        //API.setEntitySyncedData(ent, "GTAO_MAKEUP_COLOR2", 0);//Useless
+        API.setEntitySyncedData(ent, "GTAO_BLUSH", -1);
+        API.setEntitySyncedData(ent, "GTAO_BLUSH_COLOR", 0);
+        API.setEntitySyncedData(ent, "GTAO_BLUSH_COLOR2", 0);
+        API.setEntitySyncedData(ent, "GTAO_LIPSTICK", -1);
+        API.setEntitySyncedData(ent, "GTAO_LIPSTICK_COLOR", 0);
         API.setEntitySyncedData(ent, "GTAO_LIPSTICK_COLOR2", 0);
 
         var list = new float[21];
@@ -56,6 +58,14 @@ public class GTAOnlineCharacter : Script
 
         API.setEntitySyncedData(ent, "GTAO_FACE_FEATURES_LIST", list);
 	}
+
+    [Command]
+    public void faceReinit (Client player)
+    {
+        removePedFace(player.handle);
+        initializePedFace(player.handle);
+        updatePlayerFace(player);
+    }
 
 	public void removePedFace(NetHandle ent)
 	{
@@ -74,7 +84,11 @@ public class GTAOnlineCharacter : Script
         API.resetEntitySyncedData(ent, "GTAO_HAIR_COLOR");
         API.resetEntitySyncedData(ent, "GTAO_HAIR_HIGHLIGHT_COLOR");
         API.resetEntitySyncedData(ent, "GTAO_EYEBROWS");
+        API.resetEntitySyncedData(ent, "GTAO_EYEBROWS_COLOR");
+        API.resetEntitySyncedData(ent, "GTAO_EYEBROWS_COLOR2");
         API.resetEntitySyncedData(ent, "GTAO_FACIAL_HAIR");
+        API.resetEntitySyncedData(ent, "GTAO_FACIAL_HAIR_COLOR");
+        API.resetEntitySyncedData(ent, "GTAO_FACIAL_HAIR_COLOR2");
         //Appearance
         API.resetEntitySyncedData(ent, "GTAO_BLEMISHES");
         API.resetEntitySyncedData(ent, "GTAO_AGEING");
@@ -83,14 +97,11 @@ public class GTAOnlineCharacter : Script
         API.resetEntitySyncedData(ent, "GTAO_SUN_DAMAGE");
         API.resetEntitySyncedData(ent, "GTAO_EYE_COLOR");
         API.resetEntitySyncedData(ent, "GTAO_MAKEUP");
+        //API.resetEntitySyncedData(ent, "GTAO_MAKEUP_COLOR");
+        //API.resetEntitySyncedData(ent, "GTAO_MAKEUP_COLOR2");
         API.resetEntitySyncedData(ent, "GTAO_BLUSH");
         API.resetEntitySyncedData(ent, "GTAO_LIPSTICK");
-
-        API.resetEntitySyncedData(ent, "GTAO_EYEBROWS_COLOR");
-        API.resetEntitySyncedData(ent, "GTAO_MAKEUP_COLOR");
         API.resetEntitySyncedData(ent, "GTAO_LIPSTICK_COLOR");
-        API.resetEntitySyncedData(ent, "GTAO_EYEBROWS_COLOR2");
-        API.resetEntitySyncedData(ent, "GTAO_MAKEUP_COLOR2");
         API.resetEntitySyncedData(ent, "GTAO_LIPSTICK_COLOR2");
         
         API.resetEntitySyncedData(ent, "GTAO_FACE_FEATURES_LIST");

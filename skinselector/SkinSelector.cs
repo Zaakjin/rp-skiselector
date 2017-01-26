@@ -11,18 +11,25 @@ namespace skinselector
     public class SkinSelector : Script
     {
         int[] femaleHairId = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38 };
-        int[] maleHairId = { 0, 1, 2, 3, 4, 6, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36 };
-        string[] menuItemsKeys = { "SK_SEL_Цвет волос", "SK_SEL_Оттенок волос", "SK_SEL_Брови", "SK_SEL_Волосы на лице", "SK_SEL_Дефекты кожи", "SK_SEL_Старение кожи", "SK_SEL_Тип кожи", "SK_SEL_Родинки и веснушки", "SK_SEL_Повреждения кожи", "SK_SEL_Цвет глаз", "SK_SEL_Макияж глаз", "SK_SEL_Румяна", "SK_SEL_Помада" };
-        string[] menuItemsValues = { "GTAO_HAIR_COLOR", "GTAO_HAIR_HIGHLIGHT_COLOR", "GTAO_EYEBROWS", "GTAO_FACIAL_HAIR", "GTAO_BLEMISHES", "GTAO_AGEING", "GTAO_COMPLEXION", "GTAO_FRECKLES", "GTAO_SUN_DAMAGE", "GTAO_EYE_COLOR", "GTAO_MAKEUP", "GTAO_BLUSH", "GTAO_LIPSTICK" };
-        Dictionary<string, string> menuDictionary = new Dictionary<string, string>();
+        int[] maleHairId = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36 };
+        string[] menuItemsKeysSameValue = { "SK_SEL_Цвет волос", "SK_SEL_Оттенок волос", "SK_SEL_Брови", "SK_SEL_Цвет бровей", "SK_SEL_Оттенок бровей", "SK_SEL_Цвет волос на лице", "SK_SEL_Оттенок волос на лице", "SK_SEL_Цвет макияжа", "SK_SEL_Оттенок макияжа" };
+        string[] menuItemsValuesSameValue = { "GTAO_HAIR_COLOR", "GTAO_HAIR_HIGHLIGHT_COLOR", "GTAO_EYEBROWS", "GTAO_EYEBROWS_COLOR", "GTAO_EYEBROWS_COLOR2", "GTAO_FACIAL_HAIR_COLOR", "GTAO_FACIAL_HAIR_COLOR2", "GTAO_MAKEUP_COLOR", "GTAO_MAKEUP_COLOR2" };
+        string[] menuItemsKeysMinusValue = { "SK_SEL_Волосы на лице", "SK_SEL_Дефекты кожи", "SK_SEL_Старение кожи", "SK_SEL_Тип кожи", "SK_SEL_Родинки и веснушки", "SK_SEL_Повреждения кожи", "SK_SEL_Цвет глаз", "SK_SEL_Макияж глаз", "SK_SEL_Румяна", "SK_SEL_Помада" };
+        string[] menuItemsValuesMinusValue = { "GTAO_FACIAL_HAIR", "GTAO_BLEMISHES", "GTAO_AGEING", "GTAO_COMPLEXION", "GTAO_FRECKLES", "GTAO_SUN_DAMAGE", "GTAO_EYE_COLOR", "GTAO_MAKEUP", "GTAO_BLUSH", "GTAO_LIPSTICK" };
+        Dictionary<string, string> menuDictionarySameValue = new Dictionary<string, string>();
+        Dictionary<string, string> menuDictionaryMinusValue = new Dictionary<string, string>();
 
         public SkinSelector()
         {
             API.onPlayerFinishedDownload += OnPlayerFinishedDownloadHandler;
             API.onClientEventTrigger += OnClientFaceChange;
-            for (int i=0; i < menuItemsKeys.Length; i++)
+            for (int i=0; i < menuItemsKeysSameValue.Length; i++)
             {
-                menuDictionary.Add(menuItemsKeys[i], menuItemsValues[i]);
+                menuDictionarySameValue.Add(menuItemsKeysSameValue[i], menuItemsValuesSameValue[i]);
+            }
+            for (int i = 0; i < menuItemsKeysMinusValue.Length; i++)
+            {
+                menuDictionaryMinusValue.Add(menuItemsKeysMinusValue[i], menuItemsValuesMinusValue[i]);
             }
         }
 
@@ -38,16 +45,21 @@ namespace skinselector
         private void OnClientFaceChange(Client sender, string eventName, object[] argsr)
         {
             string dataToChange;
-            menuDictionary.TryGetValue(eventName, out dataToChange);
+            menuDictionarySameValue.TryGetValue(eventName, out dataToChange);
             if (dataToChange != null)
             {
-                API.sendChatMessageToPlayer(sender, "~r~Data to change: " + dataToChange);
                 API.setEntitySyncedData(sender, dataToChange, argsr[0]);
                 API.exported.gtaocharacter.updatePlayerFace(sender.handle);
                 return;
             }
-            if (eventName == "SK_SEL_Пол") { API.sendChatMessageToPlayer(sender, "ЖОПА"); }
-            API.sendChatMessageToPlayer(sender, "~r~Data to change: " + dataToChange + " ~w~Event name: ~g~" + eventName);
+            menuDictionaryMinusValue.TryGetValue(eventName, out dataToChange);
+            if (dataToChange != null)
+            {
+                var temp = Int32.Parse(argsr[0].ToString())-1;
+                API.setEntitySyncedData(sender, dataToChange, temp);
+                API.exported.gtaocharacter.updatePlayerFace(sender.handle);
+                return;
+            }
             switch (eventName)
             {
                 case "SK_SEL_Мать":
@@ -58,7 +70,7 @@ namespace skinselector
                     API.setEntitySyncedData(sender, "GTAO_SHAPE_SECOND_ID", argsr[0]);
                     API.setEntitySyncedData(sender, "GTAO_SKIN_SECOND_ID", argsr[0]);
                     break;
-                case "SK_SEL_Лицо":
+                case "SK_SEL_Внешний вид":
                     switch ((int)argsr[0])
                     {
                         case 0:
@@ -72,7 +84,7 @@ namespace skinselector
                             break;
                     }
                     break;
-                case "SK_SEL_Кожа":
+                case "SK_SEL_Цвет кожи":
                     switch ((int)argsr[0])
                     {
                         case 0:
@@ -88,7 +100,6 @@ namespace skinselector
                     }
                     break;
                 case "SK_SEL_Пол":
-                    API.sendChatMessageToPlayer(sender, "~r~SK_SEL_Пол Event triggered");
                     switch ((int)argsr[0])
                     {
                         case 0:

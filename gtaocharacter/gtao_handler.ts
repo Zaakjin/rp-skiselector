@@ -68,9 +68,15 @@ function setPedCharacter(ent) {
         API.callNative("_SET_PED_HEAD_OVERLAY_COLOR", ent, 2, 1, eyebrowsColor, eyebrowsColor2);
  
         // FACIAL_HAIR
-        var facialHairStyle = API.getEntitySyncedData(ent, "GTAO_FACIAL_HAIR");
-        
-        API.callNative("SET_PED_HEAD_OVERLAY", ent, 1, facialHairStyle, API.f(1));
+        if (API.hasEntitySyncedData(ent, "GTAO_FACIAL_HAIR")) {
+            var facialHairStyle = API.getEntitySyncedData(ent, "GTAO_FACIAL_HAIR");
+            var facialHairColor = API.getEntitySyncedData(ent, "GTAO_FACIAL_HAIR_COLOR");
+            var facialHairColor2 = API.getEntitySyncedData(ent, "GTAO_FACIAL_HAIR_COLOR2");
+
+            API.callNative("SET_PED_HEAD_OVERLAY", ent, 1, facialHairStyle, API.f(1));
+
+            API.callNative("_SET_PED_HEAD_OVERLAY_COLOR", ent, 1, 1, facialHairColor, facialHairColor2);
+        }
 
         // BLEMISHES
         var blemishes = API.getEntitySyncedData(ent, "GTAO_BLEMISHES");
@@ -102,7 +108,7 @@ function setPedCharacter(ent) {
 
         API.callNative("_SET_PED_EYE_COLOR", ent, eyeColor);
 
-        //MAKEUP
+        // MAKEUP
         if (API.hasEntitySyncedData(ent, "GTAO_MAKEUP"))
         {
             var makeup = API.getEntitySyncedData(ent, "GTAO_MAKEUP");
@@ -110,11 +116,20 @@ function setPedCharacter(ent) {
             var makeupColor2 = API.getEntitySyncedData(ent, "GTAO_MAKEUP_COLOR2");
                     
             API.callNative("SET_PED_HEAD_OVERLAY", ent, 4, makeup, API.f(1));
-            //API.callNative("SET_PED_HEAD_OVERLAY", ent, 8, lipstick, API.f(1));        
             //API.callNative("_SET_PED_HEAD_OVERLAY_COLOR", ent, 4, 0, makeupColor, makeupColor2);
         }
 
-        //LIPSTICK
+        // BLUSH
+        if (API.hasEntitySyncedData(ent, "GTAO_BLUSH")) {
+            var blush = API.getEntitySyncedData(ent, "GTAO_BLUSH");
+            var blushColor =  API.getEntitySyncedData(ent, "GTAO_BLUSH_COLOR");
+            var blushColor2 = API.getEntitySyncedData(ent, "GTAO_BLUSH_COLOR2");
+
+            API.callNative("SET_PED_HEAD_OVERLAY", ent, 5, blush, API.f(1));
+            API.callNative("_SET_PED_HEAD_OVERLAY_COLOR", ent, 5, 2, blushColor, blushColor2);
+        }
+
+        // LIPSTICK
         if (API.hasEntitySyncedData(ent, "GTAO_LIPSTICK"))
         {
             var lipstick = API.getEntitySyncedData(ent, "GTAO_LIPSTICK");
