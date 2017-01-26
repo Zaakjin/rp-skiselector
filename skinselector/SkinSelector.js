@@ -39,19 +39,19 @@ var appearanceMenuStructure = [[0, "Волосы", function (a) { fillHairstyleM
     [1, "Повреждения кожи", numberToList(API.returnNative("_GET_NUM_HEAD_OVERLAY_VALUES", 0, 7) - 1, true)],
     [1, "Цвет глаз", numberToList(31, true)],
     [1, "Макияж глаз", numberToList(API.returnNative("_GET_NUM_HEAD_OVERLAY_VALUES", 0, 4) - 1, true)],
-    [1, "Цвет макияжа", numberToList(API.returnNative("_GET_NUM_MAKEUP_COLORS", 0) - 1)],
-    [1, "Оттенок макияжа", numberToList(API.returnNative("_GET_NUM_MAKEUP_COLORS", 0) - 1)],
     [1, "Румяна", numberToList(API.returnNative("_GET_NUM_HEAD_OVERLAY_VALUES", 0, 5) - 1, true)],
-    [1, "Помада", numberToList(API.returnNative("_GET_NUM_HEAD_OVERLAY_VALUES", 0, 8) - 1, true)]];
+    [1, "Цвет румян", numberToList(API.returnNative("_GET_NUM_MAKEUP_COLORS", 0) - 1)],
+    [1, "Помада", numberToList(API.returnNative("_GET_NUM_HEAD_OVERLAY_VALUES", 0, 8) - 1, true)],
+    [1, "Цвет помады", numberToList(API.returnNative("_GET_NUM_MAKEUP_COLORS", 0) - 1)]];
 var clothesMenuStructure = [[1, "Стиль", numberToList(10)],
     [1, "Одежда", numberToList(10)],
     [1, "Головной убор", numberToList(10)],
     [1, "Очки", numberToList(10)]];
 var skinMenuStructure = [[2, "Пол", arrayToList(["Мужской", "Женский"])],
     [0, "Наследственность"],
-    [0, "Характеристики"],
-    [0, "Внешность"],
-    [0, "Одежда"]];
+    //[0, "Характеристики"],
+    [0, "Внешность"]];
+//[0, "Одежда"]];
 API.onUpdate.connect(function () {
     if (menuPool != null) {
         menuPool.ProcessMenus();
@@ -97,10 +97,8 @@ function fillHairstyleMenu(newMenu) {
         [1, "Оттенок волос", numberToList(API.returnNative("_GET_NUM_HAIR_COLORS", 0) - 1)],
         [1, "Брови", numberToList(API.returnNative("_GET_NUM_HEAD_OVERLAY_VALUES", 0, 2) - 1, true)],
         [1, "Цвет бровей", numberToList(API.returnNative("_GET_NUM_HAIR_COLORS", 0) - 1)],
-        //[1, "Оттенок бровей",       numberToList(API.returnNative("_GET_NUM_HAIR_COLORS", 0)-1)],//Useless
         [1, "Волосы на лице", numberToList(API.returnNative("_GET_NUM_HEAD_OVERLAY_VALUES", 0, 1) - 1, true)],
         [1, "Цвет волос на лице", numberToList(API.returnNative("_GET_NUM_HAIR_COLORS", 0) - 1)]];
-    //[1, "Оттенок волос на лице",numberToList(API.returnNative("_GET_NUM_HAIR_COLORS", 0)-1)]];//Useless
     if (API.getEntityModel(API.getLocalPlayer()) == -1667301416) {
         var femaleHairStyleMenu = hairstyleMenuItems;
         femaleHairStyleMenu.splice(5, 2);
@@ -176,7 +174,7 @@ function numberToList(maxId, defValue) {
     if (defValue === void 0) { defValue = false; }
     var returnList = new List(String);
     if (defValue) {
-        returnList.Add("По умолчанию");
+        returnList.Add("Стандарт");
     }
     for (var i = 0; i <= maxId; i++) {
         returnList.Add(i.toString());

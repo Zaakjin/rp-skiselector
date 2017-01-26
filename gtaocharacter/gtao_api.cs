@@ -12,7 +12,6 @@ public class GTAOnlineCharacter : Script
 	{
 		API.setEntitySyncedData(ent, "GTAO_HAS_CHARACTER_DATA", true);
 
-        
         //API.setEntitySyncedData(ent, "GTAO_PLAYER_MODEL", 1885233650);
         //Inheritance
         API.setEntitySyncedData(ent, "GTAO_PLAYER_MODEL", -1667301416);
@@ -32,7 +31,7 @@ public class GTAOnlineCharacter : Script
         API.setEntitySyncedData(ent, "GTAO_EYEBROWS_COLOR2", 0);
         API.setEntitySyncedData(ent, "GTAO_FACIAL_HAIR", -1); // No by default. 
         API.setEntitySyncedData(ent, "GTAO_FACIAL_HAIR_COLOR", 0);
-        API.setEntitySyncedData(ent, "GTAO_FACIAL_HAIR_COLOR2", 0);//Useless
+        //API.setEntitySyncedData(ent, "GTAO_FACIAL_HAIR_COLOR2", 0);//Useless
         //Appearance
         API.setEntitySyncedData(ent, "GTAO_BLEMISHES", -1);
         API.setEntitySyncedData(ent, "GTAO_AGEING", -1);
@@ -45,10 +44,10 @@ public class GTAOnlineCharacter : Script
         //API.setEntitySyncedData(ent, "GTAO_MAKEUP_COLOR2", 0);//Useless
         API.setEntitySyncedData(ent, "GTAO_BLUSH", -1);
         API.setEntitySyncedData(ent, "GTAO_BLUSH_COLOR", 0);
-        API.setEntitySyncedData(ent, "GTAO_BLUSH_COLOR2", 0);
+        //API.setEntitySyncedData(ent, "GTAO_BLUSH_COLOR2", 0);
         API.setEntitySyncedData(ent, "GTAO_LIPSTICK", -1);
         API.setEntitySyncedData(ent, "GTAO_LIPSTICK_COLOR", 0);
-        API.setEntitySyncedData(ent, "GTAO_LIPSTICK_COLOR2", 0);
+        //API.setEntitySyncedData(ent, "GTAO_LIPSTICK_COLOR2", 0);
 
         var list = new float[21];
 

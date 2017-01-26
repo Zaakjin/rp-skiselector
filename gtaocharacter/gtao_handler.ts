@@ -61,21 +61,21 @@ function setPedCharacter(ent) {
         // EYEBROWS
         var eyebrowsStyle = API.getEntitySyncedData(ent, "GTAO_EYEBROWS");
         var eyebrowsColor = API.getEntitySyncedData(ent, "GTAO_EYEBROWS_COLOR");
-        var eyebrowsColor2 = API.getEntitySyncedData(ent, "GTAO_EYEBROWS_COLOR2");
+        //var eyebrowsColor2 = API.getEntitySyncedData(ent, "GTAO_EYEBROWS_COLOR2");
 
         API.callNative("SET_PED_HEAD_OVERLAY", ent, 2, eyebrowsStyle, API.f(1));
 
-        API.callNative("_SET_PED_HEAD_OVERLAY_COLOR", ent, 2, 1, eyebrowsColor, eyebrowsColor2);
+        API.callNative("_SET_PED_HEAD_OVERLAY_COLOR", ent, 2, 1, eyebrowsColor, eyebrowsStyle);
  
         // FACIAL_HAIR
         if (API.hasEntitySyncedData(ent, "GTAO_FACIAL_HAIR")) {
             var facialHairStyle = API.getEntitySyncedData(ent, "GTAO_FACIAL_HAIR");
             var facialHairColor = API.getEntitySyncedData(ent, "GTAO_FACIAL_HAIR_COLOR");
-            var facialHairColor2 = API.getEntitySyncedData(ent, "GTAO_FACIAL_HAIR_COLOR2");
+            //var facialHairColor2 = API.getEntitySyncedData(ent, "GTAO_FACIAL_HAIR_COLOR2");
 
             API.callNative("SET_PED_HEAD_OVERLAY", ent, 1, facialHairStyle, API.f(1));
 
-            API.callNative("_SET_PED_HEAD_OVERLAY_COLOR", ent, 1, 1, facialHairColor, facialHairColor2);
+            API.callNative("_SET_PED_HEAD_OVERLAY_COLOR", ent, 1, 1, facialHairColor, facialHairColor);
         }
 
         // BLEMISHES
@@ -112,8 +112,8 @@ function setPedCharacter(ent) {
         if (API.hasEntitySyncedData(ent, "GTAO_MAKEUP"))
         {
             var makeup = API.getEntitySyncedData(ent, "GTAO_MAKEUP");
-            var makeupColor = API.getEntitySyncedData(ent, "GTAO_MAKEUP_COLOR");
-            var makeupColor2 = API.getEntitySyncedData(ent, "GTAO_MAKEUP_COLOR2");
+            //var makeupColor = API.getEntitySyncedData(ent, "GTAO_MAKEUP_COLOR");
+            //var makeupColor2 = API.getEntitySyncedData(ent, "GTAO_MAKEUP_COLOR2");
                     
             API.callNative("SET_PED_HEAD_OVERLAY", ent, 4, makeup, API.f(1));
             //API.callNative("_SET_PED_HEAD_OVERLAY_COLOR", ent, 4, 0, makeupColor, makeupColor2);
@@ -123,10 +123,10 @@ function setPedCharacter(ent) {
         if (API.hasEntitySyncedData(ent, "GTAO_BLUSH")) {
             var blush = API.getEntitySyncedData(ent, "GTAO_BLUSH");
             var blushColor =  API.getEntitySyncedData(ent, "GTAO_BLUSH_COLOR");
-            var blushColor2 = API.getEntitySyncedData(ent, "GTAO_BLUSH_COLOR2");
+            //var blushColor2 = API.getEntitySyncedData(ent, "GTAO_BLUSH_COLOR2");
 
-            API.callNative("SET_PED_HEAD_OVERLAY", ent, 5, blush, API.f(1));
-            API.callNative("_SET_PED_HEAD_OVERLAY_COLOR", ent, 5, 2, blushColor, blushColor2);
+            API.callNative("SET_PED_HEAD_OVERLAY", ent, 5, blush, API.f(0.4));
+            API.callNative("_SET_PED_HEAD_OVERLAY_COLOR", ent, 5, 2, blushColor, blushColor);
         }
 
         // LIPSTICK
@@ -134,10 +134,10 @@ function setPedCharacter(ent) {
         {
             var lipstick = API.getEntitySyncedData(ent, "GTAO_LIPSTICK");
             var lipstickColor = API.getEntitySyncedData(ent, "GTAO_LIPSTICK_COLOR");
-            var lipstickColor2 = API.getEntitySyncedData(ent, "GTAO_LIPSTICK_COLOR2");
+            //var lipstickColor2 = API.getEntitySyncedData(ent, "GTAO_LIPSTICK_COLOR2");
 
-            API.callNative("SET_PED_HEAD_OVERLAY", ent, 8, lipstick, API.f(1));
-            API.callNative("_SET_PED_HEAD_OVERLAY_COLOR", ent, 8, 2, lipstickColor, lipstickColor2);
+            API.callNative("SET_PED_HEAD_OVERLAY", ent, 8, lipstick, API.f(0.8));
+            API.callNative("_SET_PED_HEAD_OVERLAY_COLOR", ent, 8, 2, lipstickColor, lipstickColor);
         }
         // FACE FEATURES (e.g. nose length, chin shape, etc)
 
