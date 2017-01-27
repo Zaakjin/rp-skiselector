@@ -3,4 +3,6 @@
     <include resource="gtaocharacter" />
     <script src="SkinSelector.cs" type="server" lang="csharp" />
     <script src="SkinSelector.js" type="client" lang="javascript" />
+    <script src="ClothSelector.cs" type="server" lang="csharp" />
+    <script src="clothselector.js" type="client" lang="javascript" />
 </meta>

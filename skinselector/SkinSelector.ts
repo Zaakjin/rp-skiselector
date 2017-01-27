@@ -59,9 +59,9 @@ var clothesMenuStructure = [[1, "Стиль",           numberToList(10)],
 
 var skinMenuStructure = [[2, "Пол",             arrayToList(["Мужской", "Женский"])],
                         [0, "Наследственность"],
-                        //[0, "Характеристики"],
-                        [0, "Внешность"]];
-                        //[0, "Одежда"]];
+                        [0, "Характеристики"],
+                        [0, "Внешность"],
+                        [0, "Одежда"]];
 
 
 
@@ -117,6 +117,7 @@ var hairstyleMenuItems =    [[1, "Прическа",        (API.getEntityModel(
                             [1, "Цвет бровей",          numberToList(API.returnNative("_GET_NUM_HAIR_COLORS", 0)-1)],
                             [1, "Волосы на лице",       numberToList(API.returnNative("_GET_NUM_HEAD_OVERLAY_VALUES", 0, 1)-1, true)],
                             [1, "Цвет волос на лице",   numberToList(API.returnNative("_GET_NUM_HAIR_COLORS", 0)-1)]];
+                            //[1, "Оттенок волос на лице",numberToList(API.returnNative("_GET_NUM_HAIR_COLORS", 0)-1)]];//Useless
         if (API.getEntityModel(API.getLocalPlayer()) == -1667301416) {
             var femaleHairStyleMenu = hairstyleMenuItems;
             femaleHairStyleMenu.splice(5, 2);
@@ -134,7 +135,7 @@ function fillMenuWithListItems(menu: any, itemArray: any[], title: string) {
         switch (itemArray[i][0]) {
             case 0:
                 if (typeof itemArray[i][2] === "function") {
-                    var newMenuItemAndSubMenu = createSubMenu(menu, SKIN_MENU_NAME, itemArray[i][1], 2);
+                    var newMenuItemAndSubMenu = createSubMenu(menu, title, itemArray[i][1], 2);
                     createdItems.push(newMenuItemAndSubMenu[1]);
                     createdSubMenus.push(newMenuItemAndSubMenu[0]);
                     var functionToBindToMenu = itemArray[i][2];
@@ -142,7 +143,7 @@ function fillMenuWithListItems(menu: any, itemArray: any[], title: string) {
                     newMenuItemAndSubMenu[0].OnMenuClose.connect(function (sender) { newMenuItemAndSubMenu[0].Clear()});
                     break;
                 };
-                var newMenuItemsAndSubMenus = createSubMenu(menu, SKIN_MENU_NAME, itemArray[i][1], 2);
+                var newMenuItemsAndSubMenus = createSubMenu(menu, title, itemArray[i][1], 2);
                 createdItems.push(newMenuItemsAndSubMenus[1]);
                 createdSubMenus.push(newMenuItemsAndSubMenus[0]);
                 break;
