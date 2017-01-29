@@ -14,7 +14,7 @@ var SKIN_MENU_NAME = "Редактор персонажа";
 //                                                            2 Строка с выбором <текст>(временно одно и тоже что и id 1), 
 //                                                            3 Обычная строка без подменю),
 //                                       name название пункта меню,
-//                                       items[] массив пунктов меню для id 0 или список вариантов для id 1,2]
+//                                       список вариантов для id 1,2]
 var maleHairstyleVariants = ["Под ноль", "Коротко", '"Ястреб"', '"Хипстер"', 'Челка набок', '"Коротко"', '"Байкер"', '"Хвост"', '"Косички"', '"Прилиза"', '"Коротко"', '"Шипы"', '"Цезарь"', '"Чоппи"', 'Дреды', 'Длинные', 'Лохматые кудри', '"Серфингист"', '"Набок"', '"Зализ"', '"Длинные"', '"Юный хипстер"', 'Классические "Косички"', 'Косички - "пальма"', 'Косички - "молнии"', 'Зачесанные наверх косички', 'Косички - зигзаги', 'Косички - "улитки"', 'Хай - топ', 'Растрепанный зачес назад', 'Подстриженны зачес назад', 'Подстриженный зачес набок', 'Шипастый ирокез', '"Стиляга"', '"Стиляга" со слоями'];
 var femaleHairstyleVariants = ["Под ноль", "Коротко", "Слои", "Косички", "Хвост", "Ирокез", "Косички", "Боб", "Ястреб", "Ракушка", "Лонг боб", "Свободно", "Пикси", "Подбритые виски", "Узел", "Волнистый боб", "Красотка", "Пучок", "Флэппер боб", "Тугой узел", "Одуванчик", "Взрыв", "Узел", "Сколотые косички", "Косички-листья", "Косички-зигзаги", "Хвостики с челкой", "Косички-волны", "Косички-завитки", "Челка-валик", "Растрепанный зачес назад", "Подстриженный зачес назад", "Подстриженный зачес набок", "Шипастый ирокез", "Банда и косички", "Челси", "Стиляга со слоями"];
 var inheritanceMenuStructure = [[1, "Мать", numberToList(45)],
@@ -99,7 +99,6 @@ function fillHairstyleMenu(newMenu) {
         [1, "Цвет бровей", numberToList(API.returnNative("_GET_NUM_HAIR_COLORS", 0) - 1)],
         [1, "Волосы на лице", numberToList(API.returnNative("_GET_NUM_HEAD_OVERLAY_VALUES", 0, 1) - 1, true)],
         [1, "Цвет волос на лице", numberToList(API.returnNative("_GET_NUM_HAIR_COLORS", 0) - 1)]];
-    //[1, "Оттенок волос на лице",numberToList(API.returnNative("_GET_NUM_HAIR_COLORS", 0)-1)]];//Useless
     if (API.getEntityModel(API.getLocalPlayer()) == -1667301416) {
         var femaleHairStyleMenu = hairstyleMenuItems;
         femaleHairStyleMenu.splice(5, 2);
@@ -110,14 +109,18 @@ function fillHairstyleMenu(newMenu) {
     }
 }
 ;
-function fillMenuWithListItems(menu, itemArray, title) {
+//За полняет меню menu элементами из массива itemArray для созданных подменю ставит заголовок title и точку привяки anchorPoint(по умолчанию 2)
+//если в itemArray[2] функция, привязывает ее к открытию согданного подменю
+//возвращает массив из созданных подменю и массив созданных пунктов меню [createdSubMenus, createdItems]
+function fillMenuWithListItems(menu, itemArray, title, anchorPoint) {
+    if (anchorPoint === void 0) { anchorPoint = 2; }
     var createdItems = [];
     var createdSubMenus = [];
     for (var i = 0; i < itemArray.length; i++) {
         switch (itemArray[i][0]) {
             case 0:
                 if (typeof itemArray[i][2] === "function") {
-                    var newMenuItemAndSubMenu = createSubMenu(menu, title, itemArray[i][1], 2);
+                    var newMenuItemAndSubMenu = createSubMenu(menu, title, itemArray[i][1], anchorPoint);
                     createdItems.push(newMenuItemAndSubMenu[1]);
                     createdSubMenus.push(newMenuItemAndSubMenu[0]);
                     var functionToBindToMenu = itemArray[i][2];
@@ -128,7 +131,7 @@ function fillMenuWithListItems(menu, itemArray, title) {
                     break;
                 }
                 ;
-                var newMenuItemsAndSubMenus = createSubMenu(menu, title, itemArray[i][1], 2);
+                var newMenuItemsAndSubMenus = createSubMenu(menu, title, itemArray[i][1], anchorPoint);
                 createdItems.push(newMenuItemsAndSubMenus[1]);
                 createdSubMenus.push(newMenuItemsAndSubMenus[0]);
                 break;
@@ -154,23 +157,20 @@ function fillMenuWithListItems(menu, itemArray, title) {
         }
         ;
     }
-    //return createdSubMenus;
     return [createdSubMenus, createdItems];
 }
 ;
-//Creates submenu returns created menu
+//Создает подменю для меню menuUI с заголовком subMenuTitle, подзаголовком subMenuName, точкой привязки anchorPoint
 function createSubMenu(menuUI, subMenuTitle, subMenuName, anchorPoint) {
     var newMenu = API.createMenu(subMenuTitle, subMenuName, 0, 0, anchorPoint);
     menuPool.Add(newMenu);
     var newMenuItem = API.createMenuItem(subMenuName, "");
     menuUI.AddItem(newMenuItem);
     menuUI.BindMenuToItem(newMenu, newMenuItem);
-    //API.sendChatMessage("~g~" + typeof newMenu);
-    //return newMenu
     return [newMenu, newMenuItem];
 }
 ;
-//Creates List<> with nubers from 1 to maxId
+//Creates List<> with numbers from 1 to maxId
 function numberToList(maxId, defValue) {
     if (defValue === void 0) { defValue = false; }
     var returnList = new List(String);
@@ -203,6 +203,7 @@ API.onKeyDown.connect(function (Player, args) {
             }
             ;
             skinMenuMain.CurrentSelection = 0;
+            menuPool.CloseAllMenus();
             skinMenuMain.Visible = true;
         }
     }

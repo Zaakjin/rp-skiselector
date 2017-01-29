@@ -44,10 +44,10 @@ public class GTAOnlineCharacter : Script
         //API.setEntitySyncedData(ent, "GTAO_MAKEUP_COLOR2", 0);//Useless
         API.setEntitySyncedData(ent, "GTAO_BLUSH", -1);
         API.setEntitySyncedData(ent, "GTAO_BLUSH_COLOR", 0);
-        //API.setEntitySyncedData(ent, "GTAO_BLUSH_COLOR2", 0);
+        //API.setEntitySyncedData(ent, "GTAO_BLUSH_COLOR2", 0);//Useless
         API.setEntitySyncedData(ent, "GTAO_LIPSTICK", -1);
         API.setEntitySyncedData(ent, "GTAO_LIPSTICK_COLOR", 0);
-        //API.setEntitySyncedData(ent, "GTAO_LIPSTICK_COLOR2", 0);
+        //API.setEntitySyncedData(ent, "GTAO_LIPSTICK_COLOR2", 0);//Useless
 
         var list = new float[21];
 

@@ -1,0 +1,4 @@
+﻿<meta>
+  <info name="IPL list generator" author="Zaakjin" type="script" async="true" />
+  <script src="ipllist.cs" type="server" lang="csharp" />
+</meta>

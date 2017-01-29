@@ -248,3 +248,8 @@ ModelManifest.xml
 *.sln
 /gtaocharacter/types-gtanetwork
 /gtaocharacter/Properties
+/ipllist/Properties
+/ipllist/types-gtanetwork
+/spawnpoint/types-gtanetwork
+*.config
+/Шмотки - Поц.csv

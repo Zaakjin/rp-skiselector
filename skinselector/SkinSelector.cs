@@ -21,6 +21,8 @@ namespace skinselector
 
         public SkinSelector()
         {
+            string a = "ffff";
+            a.
             API.onPlayerFinishedDownload += OnPlayerFinishedDownloadHandler;
             API.onClientEventTrigger += OnClientFaceChange;
             for (int i=0; i < menuItemsKeysSameValue.Length; i++)

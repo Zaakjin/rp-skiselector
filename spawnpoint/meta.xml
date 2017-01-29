@@ -1,0 +1,4 @@
+﻿<meta>
+  <info name="Sets spawnpoint" author="Zaakjin" type="script" async="true" />
+  <script src="spawnpoint.cs" type="server" lang="csharp" />
+</meta>
