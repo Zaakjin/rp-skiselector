@@ -26,7 +26,7 @@ namespace skinselector
             API.onPlayerFinishedDownload += OnPlayerFinishedDownloadHandler;
             API.onClientEventTrigger += OnClientFaceChange;
             API.onPlayerDisconnected += onPlayerDisconnectedHandler;
-            for (int i=0; i < menuItemsKeysSameValue.Length; i++)
+            for (int i = 0; i < menuItemsKeysSameValue.Length; i++)
             {
                 menuDictionarySameValue.Add(menuItemsKeysSameValue[i], menuItemsValuesSameValue[i]);
             }
@@ -47,6 +47,7 @@ namespace skinselector
             API.exported.gtaocharacter.initializePedFace(player.handle);
             loadPlayerFace(player);
             API.setPlayerSkin(player, (PedHash)API.getEntitySyncedData(player, "GTAO_PLAYER_MODEL"));
+            //DEBUG
             API.consoleOutput(">>>>>>>>>>>>>>>>>>>>>>>>");
             API.sendNativeToPlayer(player, 0x45EEE61580806D63, player.handle);
             API.exported.gtaocharacter.updatePlayerFace(player.handle);
@@ -59,11 +60,13 @@ namespace skinselector
             {
                 foreach (KeyValuePair<String, System.Object> item in loadedData)
                 {
-                    API.consoleOutput(item.Key + "-----"+ item.Value.GetType().ToString() + ">>>" + item.Value);
-                    API.setEntitySyncedData(player, item.Key, item.Value.GetType() == new Int64().GetType()? Convert.ToInt32(item.Value):item.Value.GetType() == new Double().GetType()?Convert.ToSingle(item.Value):item.Value);
+                    //DEBUG
+                    API.consoleOutput(item.Key + "-----" + item.Value.GetType().ToString() + ">>>" + item.Value);
+                    API.setEntitySyncedData(player, item.Key, item.Value.GetType() == new Int64().GetType() ? Convert.ToInt32(item.Value) : item.Value.GetType() == new Double().GetType() ? Convert.ToSingle(item.Value) : item.Value);
                     var data = API.getEntitySyncedData(player, item.Key);
-                    API.consoleOutput(item.Key + "-----"+ data.GetType() + "$$$$" + data);
-                    
+                    //DEBUG
+                    API.consoleOutput(item.Key + "-----" + data.GetType() + "$$$$" + data);
+
                 }
             }
         }
@@ -77,9 +80,9 @@ namespace skinselector
                 if (key.Contains("GTAO_") && !key.Contains("FEATURES_LIST"))
                 {
                     var data = API.getEntitySyncedData(player, key);
-                    API.consoleOutput(key + "-----"+ data.GetType() + "<<<<" + data);
+                    //DEBUG
+                    API.consoleOutput(key + "-----" + data.GetType() + "<<<<" + data);
                     dic.Add(key, API.getEntitySyncedData(player, key));
-                    //API.consoleOutput(key + " - " + API.getEntitySyncedData(player, key));
                 }
             }
             //TODO сделать обрабоку FACE_FEATURE_LIST
@@ -88,84 +91,88 @@ namespace skinselector
 
         private void OnClientFaceChange(Client sender, string eventName, object[] argsr)
         {
-            string dataToChange;
-            menuDictionarySameValue.TryGetValue(eventName, out dataToChange);
-            if (dataToChange != null)
+            if (eventName.Contains("SK_SEL_"))
             {
-                API.setEntitySyncedData(sender, dataToChange, argsr[0]);
-                API.exported.gtaocharacter.updatePlayerFace(sender.handle);
-                return;
-            }
-            menuDictionaryMinusValue.TryGetValue(eventName, out dataToChange);
-            if (dataToChange != null)
-            {
-                var temp = Int32.Parse(argsr[0].ToString())-1;
-                API.setEntitySyncedData(sender, dataToChange, temp);
-                API.exported.gtaocharacter.updatePlayerFace(sender.handle);
-                return;
-            }
-            switch (eventName)
-            {
-                case "SK_SEL_Мать":
-                    API.setEntitySyncedData(sender, "GTAO_SHAPE_FIRST_ID", argsr[0]);
-                    API.setEntitySyncedData(sender, "GTAO_SKIN_FIRST_ID", argsr[0]);
-                    break;
-                case "SK_SEL_Отец":
-                    API.setEntitySyncedData(sender, "GTAO_SHAPE_SECOND_ID", argsr[0]);
-                    API.setEntitySyncedData(sender, "GTAO_SKIN_SECOND_ID", argsr[0]);
-                    break;
-                case "SK_SEL_Внешний вид":
-                    switch ((int)argsr[0])
-                    {
-                        case 0:
-                            API.setEntitySyncedData(sender, "GTAO_SHAPE_MIX", 0.30f);
-                            break;
-                        case 1:
-                            API.setEntitySyncedData(sender, "GTAO_SHAPE_MIX", 0.50f);
-                            break;
-                        case 2:
-                            API.setEntitySyncedData(sender, "GTAO_SHAPE_MIX", 0.70f);
-                            break;
-                    }
-                    break;
-                case "SK_SEL_Цвет кожи":
-                    switch ((int)argsr[0])
-                    {
-                        case 0:
-                            API.setEntitySyncedData(sender, "GTAO_SKIN_MIX", 0.30f);
-                            break;
-                        case 1:
-                            API.setEntitySyncedData(sender, "GTAO_SKIN_MIX", 0.50f);
-                            break;
-                        case 2:
-                            API.setEntitySyncedData(sender, "GTAO_SKIN_MIX", 0.70f);
-                            break;
+                string dataToChange;
+                menuDictionarySameValue.TryGetValue(eventName, out dataToChange);
+                if (dataToChange != null)
+                {
+                    API.setEntitySyncedData(sender, dataToChange, argsr[0]);
+                    API.exported.gtaocharacter.updatePlayerFace(sender.handle);
+                    return;
+                }
+                menuDictionaryMinusValue.TryGetValue(eventName, out dataToChange);
+                if (dataToChange != null)
+                {
+                    var temp = Int32.Parse(argsr[0].ToString()) - 1;
+                    API.setEntitySyncedData(sender, dataToChange, temp);
+                    API.exported.gtaocharacter.updatePlayerFace(sender.handle);
+                    return;
+                }
+                switch (eventName)
+                {
+                    case "SK_SEL_Мать":
+                        API.setEntitySyncedData(sender, "GTAO_SHAPE_FIRST_ID", argsr[0]);
+                        API.setEntitySyncedData(sender, "GTAO_SKIN_FIRST_ID", argsr[0]);
+                        break;
+                    case "SK_SEL_Отец":
+                        API.setEntitySyncedData(sender, "GTAO_SHAPE_SECOND_ID", argsr[0]);
+                        API.setEntitySyncedData(sender, "GTAO_SKIN_SECOND_ID", argsr[0]);
+                        break;
+                    case "SK_SEL_Внешний вид":
+                        switch ((int)argsr[0])
+                        {
+                            case 0:
+                                API.setEntitySyncedData(sender, "GTAO_SHAPE_MIX", 0.30f);
+                                break;
+                            case 1:
+                                API.setEntitySyncedData(sender, "GTAO_SHAPE_MIX", 0.50f);
+                                break;
+                            case 2:
+                                API.setEntitySyncedData(sender, "GTAO_SHAPE_MIX", 0.70f);
+                                break;
+                        }
+                        break;
+                    case "SK_SEL_Цвет кожи":
+                        switch ((int)argsr[0])
+                        {
+                            case 0:
+                                API.setEntitySyncedData(sender, "GTAO_SKIN_MIX", 0.30f);
+                                break;
+                            case 1:
+                                API.setEntitySyncedData(sender, "GTAO_SKIN_MIX", 0.50f);
+                                break;
+                            case 2:
+                                API.setEntitySyncedData(sender, "GTAO_SKIN_MIX", 0.70f);
+                                break;
 
-                    }
-                    break;
-                case "SK_SEL_Пол":
-                    switch ((int)argsr[0])
-                    {
-                        case 0:
-                            API.setEntitySyncedData(sender, "GTAO_PLAYER_MODEL", 1885233650);
-                            break;
-                        case 1:
-                            API.setEntitySyncedData(sender, "GTAO_PLAYER_MODEL", -1667301416);
-                            break;
-                    }
-                    API.setPlayerSkin(sender, (PedHash)API.getEntitySyncedData(sender, "GTAO_PLAYER_MODEL"));
-                    break;
-                case "SK_SEL_Прическа":
-                    if (API.getEntitySyncedData(sender,"GTAO_PLAYER_MODEL") == -1667301416)
-                    {
-                        API.setEntitySyncedData(sender, "GTAO_HAIR_STYLE", femaleHairId[(int)argsr[0]]);
-                    } else
-                    {
-                        API.setEntitySyncedData(sender, "GTAO_HAIR_STYLE", maleHairId[(int)argsr[0]]);
-                    }
-                    break;
+                        }
+                        break;
+                    case "SK_SEL_Пол":
+                        switch ((int)argsr[0])
+                        {
+                            case 0:
+                                API.setEntitySyncedData(sender, "GTAO_PLAYER_MODEL", 1885233650);
+                                break;
+                            case 1:
+                                API.setEntitySyncedData(sender, "GTAO_PLAYER_MODEL", -1667301416);
+                                break;
+                        }
+                        API.setPlayerSkin(sender, (PedHash)API.getEntitySyncedData(sender, "GTAO_PLAYER_MODEL"));
+                        break;
+                    case "SK_SEL_Прическа":
+                        if (API.getEntitySyncedData(sender, "GTAO_PLAYER_MODEL") == -1667301416)
+                        {
+                            API.setEntitySyncedData(sender, "GTAO_HAIR_STYLE", femaleHairId[(int)argsr[0]]);
+                        }
+                        else
+                        {
+                            API.setEntitySyncedData(sender, "GTAO_HAIR_STYLE", maleHairId[(int)argsr[0]]);
+                        }
+                        break;
+                }
+                API.exported.gtaocharacter.updatePlayerFace(sender.handle);
             }
-            API.exported.gtaocharacter.updatePlayerFace(sender.handle);
         }
     }
 }

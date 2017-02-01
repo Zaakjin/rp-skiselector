@@ -193,7 +193,7 @@ function arrayToList(array) {
 }
 ;
 API.onKeyDown.connect(function (Player, args) {
-    if (args.KeyCode == Keys.E && !API.isChatOpen()) {
+    if (args.KeyCode == Keys.P && !API.isChatOpen()) {
         if (!menuPool.IsAnyMenuOpen()) {
             if (API.getEntityModel(API.getLocalPlayer()) == 1885233650) {
                 skinMenuMainSubMenusAndItems[1][0].Index = 0;

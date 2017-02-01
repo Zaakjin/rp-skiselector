@@ -50,7 +50,7 @@ var appearanceMenuStructure =   [[0, "Волосы",              function (a) {
                                 [1, "Румяна",               numberToList(API.returnNative("_GET_NUM_HEAD_OVERLAY_VALUES", 0, 5) - 1, true)],
                                 [1, "Цвет румян",           numberToList(API.returnNative("_GET_NUM_MAKEUP_COLORS", 0) - 1)],
                                 [1, "Помада",               numberToList(API.returnNative("_GET_NUM_HEAD_OVERLAY_VALUES", 0, 8) - 1, true)],
-                                [1, "Цвет помады",           numberToList(API.returnNative("_GET_NUM_MAKEUP_COLORS", 0) - 1)]];
+                                [1, "Цвет помады",          numberToList(API.returnNative("_GET_NUM_MAKEUP_COLORS", 0) - 1)]];
 
 var clothesMenuStructure = [[1, "Стиль",           numberToList(10)],
                             [1, "Одежда",          numberToList(10)],
@@ -206,7 +206,7 @@ function arrayToList(array: string[]) {
 
 
 API.onKeyDown.connect(function (Player, args) {
-    if (args.KeyCode == Keys.E && !API.isChatOpen()) {
+    if (args.KeyCode == Keys.P && !API.isChatOpen()) {
         if (!menuPool.IsAnyMenuOpen()) {
             if (API.getEntityModel(API.getLocalPlayer()) == 1885233650) {
                 skinMenuMainSubMenusAndItems[1][0].Index = 0;
