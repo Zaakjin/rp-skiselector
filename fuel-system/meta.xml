@@ -1,0 +1,5 @@
+﻿<meta>
+  <info name="Fuel system" author="Zaakjin" type="script" async="true" />
+  <script src="fuel-system.cs" type="server" lang="csharp" />
+  <script src="fuel_ui.js" type="client" lang="javascript" />
+</meta>

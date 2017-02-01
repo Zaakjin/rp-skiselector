@@ -5,6 +5,8 @@ var clothMainMenu = null;
 var clothMenuItemsAndSubMenus = null;
 //var N = 0;
 var mainCam = null;
+//переменная для функции вращения персонажа
+var lastTime = 0;
 var componentIdList = [0, 1, 3, 4, 5, 6, 7, 8, 9, 10, 11];
 var clothMainMenuStructure = [
     [0, "Face (0)"],
@@ -100,3 +102,19 @@ function setCam(id) {
     }
 }
 ;
+API.onUpdate.connect(function () {
+    if ((API.getEntitySyncedData(API.getLocalPlayer(), "ROTATION")) && (lastTime > 0 && API.getGameTime() - lastTime > 20)) {
+        var playerrot = API.getEntityRotation(API.getLocalPlayer());
+        playerrot.Z += 1.0;
+        API.setEntityRotation(API.getLocalPlayer(), playerrot);
+        API.triggerServerEvent("rotate_player");
+    }
+});
+API.onChatCommand.connect(function (msg) {
+    if (msg == "/rotate 1") {
+        lastTime = API.getGameTime();
+    }
+    if (msg == "/rotate 0") {
+        lastTime = 0;
+    }
+});

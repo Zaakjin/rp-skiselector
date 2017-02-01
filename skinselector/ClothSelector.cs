@@ -25,5 +25,20 @@ namespace skinselector
         {
             API.triggerClientEvent(player, "set_cam", type);
         }
+
+        [Command]
+        public void rotate (Client player, int type)
+        {
+            switch (type) {
+                case 0:
+                    API.setEntityPositionFrozen(player, player.handle, false);
+                    API.setEntitySyncedData(player, "ROTATION", false);
+                    break;
+                case 1:
+                    API.setEntityPositionFrozen(player, player.handle, true);
+                    API.setEntitySyncedData(player, "ROTATION", true);
+                    break;
+            }
+        }
     }
 }

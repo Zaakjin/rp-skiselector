@@ -16,6 +16,8 @@ namespace skinselector
         string[] menuItemsValuesSameValue = { "GTAO_HAIR_COLOR", "GTAO_HAIR_HIGHLIGHT_COLOR", "GTAO_EYEBROWS", "GTAO_EYEBROWS_COLOR", "GTAO_EYEBROWS_COLOR2", "GTAO_FACIAL_HAIR_COLOR", "GTAO_BLUSH_COLOR", "GTAO_LIPSTICK_COLOR" };
         string[] menuItemsKeysMinusValue = { "SK_SEL_Волосы на лице", "SK_SEL_Дефекты кожи", "SK_SEL_Старение кожи", "SK_SEL_Тип кожи", "SK_SEL_Родинки и веснушки", "SK_SEL_Повреждения кожи", "SK_SEL_Цвет глаз", "SK_SEL_Макияж глаз", "SK_SEL_Румяна", "SK_SEL_Помада" };
         string[] menuItemsValuesMinusValue = { "GTAO_FACIAL_HAIR", "GTAO_BLEMISHES", "GTAO_AGEING", "GTAO_COMPLEXION", "GTAO_FRECKLES", "GTAO_SUN_DAMAGE", "GTAO_EYE_COLOR", "GTAO_MAKEUP", "GTAO_BLUSH", "GTAO_LIPSTICK" };
+
+        string[] fieldsToLoad = { "GTAO_SHAPE_FIRST_ID", "GTAO_SHAPE_SECOND_ID", "GTAO_SKIN_FIRST_ID", "GTAO_SKIN_SECOND_ID", "GTAO_SHAPE_MIX", "GTAO_SKIN_MIX", "GTAO_HAIR_COLOR", "GTAO_HAIR_HIGHLIGHT_COLOR", "GTAO_EYE_COLOR", "GTAO_EYEBROWS", "GTAO_MAKEUP", "GTAO_LIPSTICK", "GTAO_EYEBROWS_COLOR", "GTAO_LIPSTICK_COLOR", "GTAO_EYEBROWS_COLOR2",  /*"GTAO_HAS_CHARACTER_DATA",*/ "GTAO_PLAYER_MODEL", "GTAO_HAIR_STYLE", "GTAO_FACIAL_HAIR", "GTAO_FACIAL_HAIR_COLOR", "GTAO_BLEMISHES", "GTAO_AGEING", "GTAO_COMPLEXION", "GTAO_FRECKLES", "GTAO_SUN_DAMAGE", "GTAO_BLUSH", "GTAO_BLUSH_COLOR" };/*,"GTAO_FACE_FEATURES_LIST" };*/
         Dictionary<string, string> menuDictionarySameValue = new Dictionary<string, string>();
         Dictionary<string, string> menuDictionaryMinusValue = new Dictionary<string, string>();
 
@@ -23,6 +25,7 @@ namespace skinselector
         {
             API.onPlayerFinishedDownload += OnPlayerFinishedDownloadHandler;
             API.onClientEventTrigger += OnClientFaceChange;
+            API.onPlayerDisconnected += onPlayerDisconnectedHandler;
             for (int i=0; i < menuItemsKeysSameValue.Length; i++)
             {
                 menuDictionarySameValue.Add(menuItemsKeysSameValue[i], menuItemsValuesSameValue[i]);
@@ -33,13 +36,54 @@ namespace skinselector
             }
         }
 
+        private void onPlayerDisconnectedHandler(Client player, string reason)
+        {
+            savePlayerFace(player);
+        }
+
         private void OnPlayerFinishedDownloadHandler(Client player)
         {
             //API.setPlayerSkin(player, (PedHash)1885233650);
             API.exported.gtaocharacter.initializePedFace(player.handle);
+            loadPlayerFace(player);
             API.setPlayerSkin(player, (PedHash)API.getEntitySyncedData(player, "GTAO_PLAYER_MODEL"));
+            API.consoleOutput(">>>>>>>>>>>>>>>>>>>>>>>>");
             API.sendNativeToPlayer(player, 0x45EEE61580806D63, player.handle);
             API.exported.gtaocharacter.updatePlayerFace(player.handle);
+        }
+
+        public void loadPlayerFace(Client player)
+        {
+            Dictionary<String, System.Object> loadedData = API.exported.DbController.LoadPlayerDataFromTable(player, "user_skins", fieldsToLoad.ToList());
+            if (loadedData.Count > 0)
+            {
+                foreach (KeyValuePair<String, System.Object> item in loadedData)
+                {
+                    API.consoleOutput(item.Key + "-----"+ item.Value.GetType().ToString() + ">>>" + item.Value);
+                    API.setEntitySyncedData(player, item.Key, item.Value.GetType() == new Int64().GetType()? Convert.ToInt32(item.Value):item.Value.GetType() == new Double().GetType()?Convert.ToSingle(item.Value):item.Value);
+                    var data = API.getEntitySyncedData(player, item.Key);
+                    API.consoleOutput(item.Key + "-----"+ data.GetType() + "$$$$" + data);
+                    
+                }
+            }
+        }
+
+        public void savePlayerFace(Client player)
+        {
+            Dictionary<String, System.Object> dic = new Dictionary<String, System.Object>();
+            var keys = API.getAllEntitySyncedData(player);
+            foreach (var key in keys)
+            {
+                if (key.Contains("GTAO_") && !key.Contains("FEATURES_LIST"))
+                {
+                    var data = API.getEntitySyncedData(player, key);
+                    API.consoleOutput(key + "-----"+ data.GetType() + "<<<<" + data);
+                    dic.Add(key, API.getEntitySyncedData(player, key));
+                    //API.consoleOutput(key + " - " + API.getEntitySyncedData(player, key));
+                }
+            }
+            //TODO сделать обрабоку FACE_FEATURE_LIST
+            API.exported.DbController.SavePlayerDataToTable(player, "user_skins", dic);
         }
 
         private void OnClientFaceChange(Client sender, string eventName, object[] argsr)
