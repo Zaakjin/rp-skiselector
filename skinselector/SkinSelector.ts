@@ -96,7 +96,6 @@ function createSkinMainMenu() {
 };
 
 function appearanceMenuRefreshIndexes(menuItems) {
-
     //[[0, "Волосы", function (a) { fillHairstyleMenu(a) }],
     //    [1, "Дефекты кожи", numberToList(API.returnNative("_GET_NUM_HEAD_OVERLAY_VALUES", 0, 0) - 1)],
     //    [1, "Старение кожи", numberToList(API.returnNative("_GET_NUM_HEAD_OVERLAY_VALUES", 0, 3) - 1)],
